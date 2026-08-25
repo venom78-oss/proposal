@@ -427,13 +427,37 @@ section {
             79,
             0.4
         );
+
+    /* Support dynamic scaling via CSS variable set by script.js */
+    transform: scale(var(--scale, 1));
+    transition: transform 0.18s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+/* Pulse animation used when the YES button grows to draw attention */
+.pulse {
+    animation: pulse 0.42s ease;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(calc(var(--scale, 1)));
+        box-shadow: 0 12px 35px rgba(255,23,79,0.4);
+    }
+    50% {
+        transform: scale(calc(var(--scale, 1) + 0.08));
+        box-shadow: 0 20px 50px rgba(255,23,79,0.55);
+    }
+    100% {
+        transform: scale(calc(var(--scale, 1)));
+        box-shadow: 0 12px 35px rgba(255,23,79,0.4);
+    }
 }
 
 
 #yesBtn:hover {
     transform:
         translateY(-4px)
-        scale(1.05);
+        scale(calc(var(--scale, 1) * 1.05));
 
     box-shadow:
         0 18px 45px

@@ -287,7 +287,9 @@ function handleYes() {
 
     if (buttons.yes) {
 
-        buttons.yes.style.transform = "";
+        // Reset scale variable and any pulse class
+        buttons.yes.style.removeProperty('--scale');
+        buttons.yes.classList.remove('pulse');
 
     }
 
@@ -348,7 +350,23 @@ function handleNo() {
             maxScale
         );
 
-        buttons.yes.style.transform = `scale(${scale})`;
+        // Use a CSS variable for scale so animations can reference it.
+        buttons.yes.style.setProperty('--scale', scale);
+
+        // Restart pulse animation to draw attention.
+        buttons.yes.classList.remove('pulse');
+        void buttons.yes.offsetWidth; // force reflow to restart animation
+        buttons.yes.classList.add('pulse');
+
+        // Remove the pulse class after the animation finishes.
+        const onAnimEnd = (e) => {
+            if (e.animationName === 'pulse') {
+                buttons.yes.classList.remove('pulse');
+                buttons.yes.removeEventListener('animationend', onAnimEnd);
+            }
+        };
+
+        buttons.yes.addEventListener('animationend', onAnimEnd);
 
     }
 
