@@ -333,12 +333,22 @@ function handleNo() {
     */
 
     if (
-        noClickCount >= 2 &&
+        noClickCount >= 1 &&
         buttons.yes
     ) {
 
-        buttons.yes.style.transform =
-            "scale(1.06)";
+        // Grow the YES button a bit with each click.
+        //  - increment: how much to grow per click (15% here)
+        //  - maxScale: stops growth at a reasonable size
+        const increment = 0.15; // 15% per NO click
+        const maxScale = 3; // don't grow larger than 3x
+
+        const scale = Math.min(
+            1 + (noClickCount * increment),
+            maxScale
+        );
+
+        buttons.yes.style.transform = `scale(${scale})`;
 
     }
 
